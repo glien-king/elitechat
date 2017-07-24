@@ -1,1 +1,1 @@
-"# elitechat" 
+Demo chat application built over nodejs and authored by Ahmed Shirin
