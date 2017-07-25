@@ -7,8 +7,9 @@ var BrokerClient = function(amqp, config, socketServer){
 				conn.createChannel(function(err, ch) {
 					self.channel = ch;
 					ch.assertQueue(config.messagingQueueName, {durable: false});
-					ch.consume(config.messagingQueueName, self.consumeMessage, {noAck: true});					
-					resolve();					
+					ch.consume(config.messagingQueueName, self.consumeMessage, {noAck: true});
+					console.log('connected successfully to the message broker');
+					resolve();		
 				});
 
 			});			
