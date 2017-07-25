@@ -1,5 +1,5 @@
 module.exports = {
 	port: 4381,
 	messagingQueueName: "elite",
-	rabbitMqEndpoint: "X",	
+	rabbitMqEndpoint: "amqp://admin:admin@stagingdb.cloudapp.net",	
 }
