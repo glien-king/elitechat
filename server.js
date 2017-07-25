@@ -11,7 +11,7 @@ setupServer = async () => {
 	await brokerClient.setupBrokerConnection();
 	app.listen(config.port);
 	console.log('elite-chat: listening to connections on port: ' + config.port);
-	handleRoutes(app);
+	handleRoutes(app, brokerClient);
 }
 
 setupServer();

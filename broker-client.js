@@ -1,15 +1,11 @@
-var connectionProperties = {
-	channel: null
-};
-
 var brokerClient = function(amqp, config){
- 	 
-	this.setupBrokerConnection = () => {			
+ 	this.channel = null;	
+	this.setupBrokerConnection = () => {
+		var self = this;		
 		return new Promise((resolve, reject) => {			
 			amqp.connect(config.rabbitMqEndpoint, function(err, conn) {
-				connectionProperties.connection = conn;				
 				conn.createChannel(function(err, ch) {
-					connectionProperties.channel = ch;
+					self.channel = ch;
 					ch.assertQueue(config.messagingQueueName, {durable: false});
 					resolve();					
 				});
@@ -20,7 +16,7 @@ var brokerClient = function(amqp, config){
 	 };
 	 
 	this.publishMessage = (message) => {
-		connectionProperties.channel.sendToQueue(config.messagingQueueName, new Buffer(message));
+		this.channel.sendToQueue(config.messagingQueueName, new Buffer(message));
 	}
 	 
  } 

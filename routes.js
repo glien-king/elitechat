@@ -1,4 +1,4 @@
-var routes = function(app){
+var routes = function(app, brokerClient){
 	
 	app.get('/', (request, response) => {
 		
