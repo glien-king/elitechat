@@ -13,8 +13,10 @@
 	</div>
 	
 	<div id="Message">	
+		<input type="button" id="ShowUsers" value="Show All Users" onclick="showUsers()"/>
+		<div id="AllUsers"></div>
 		<h3>Send an instant message to: </h3>
-		<input type="text" id="TargetUserIdentifier"/>
+		<input type="text" id="TargetUserName"/>
 		<br/>
 		<div class="h20"></div>
 		<h3>Type your message: </h3>
@@ -42,7 +44,6 @@
 			senderIdentifier: msgObj.senderIdentifier,
 			sentOn: msgObj.queuedOn
 		}
-		alert('received message');
 		var url = applicationHost + "/private/decodeMessage";
 		var callBack = (xhttp) => {
 			if(xhttp.response == {}) return;
@@ -73,7 +74,14 @@
 	function sendMessage() {
 		var url = applicationHost + "/private/send";
 		var messageContent = document.getElementById("MessageContent").value;
-
+		var targetUserName = document.getElementById("TargetUserName").value;
+		var allUsers = document.getElementById("AllUsers").childNodes;
+		var recipientIdentifier = '';
+		for(var i in allUsers){
+			if(allUsers[i].innerText == targetUserName){
+				recipientIdentifier = allUsers[i].getAttribute("identifier");
+			}
+		}
 		var body = {
 			senderUserIdentifier: readCookie(identifierCookieName),
 			content: messageContent,
@@ -83,8 +91,35 @@
 		postRequest(url, body, callBack);
 	}
 	
+	function showUsers() {
+		var url = applicationHost + "/user/getAllUsers";
+		var callBack = (xhttp) => {	
+			var responseJson = JSON.parse(xhttp.response);
+			for(var i in responseJson){
+				var user = responseJson[i];
+				var node = document.createElement("span"); 
+				node.setAttribute("identifier", user.uniqueidentifier);
+				node.innerText = user.name;
+				document.getElementById("AllUsers").appendChild(node);
+				document.getElementById("AllUsers").appendChild(document.createElement("br"));
+			}
+		}
+		getRequest(url, callBack);
+	}
+	
 	
 	//Helper Functions
+	
+	function getRequest(url, callBack) {
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+			  callBack(xhttp);
+			}
+		};
+		xhttp.open("GET", url, true);
+		xhttp.send();	
+	}
 	
 	function postRequest(url, body, callBack){
 		var xhttp = new XMLHttpRequest();
