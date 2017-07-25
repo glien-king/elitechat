@@ -2,11 +2,14 @@ var factories = require('./factories.js');
 
 var messagingService = function(broker){
 	
-	this.sendMessage = (messageDetails, recipient) => {	
-		var payload = factories.constructMessagingPayLoad(messageDetails, recipient);
-		broker.publishMessage(JSON.stringify(payload))
+	this.sendMessage = (messageDetails) => {	
+		var payload = factories.constructMessagingPayLoad(messageDetails);
+		broker.publishMessage(JSON.stringify(payload));
 	}
 	
+	this.verifyReceiver = () => {
+	}
+
 }
 
 module.exports = messagingService;

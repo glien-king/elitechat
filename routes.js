@@ -1,4 +1,3 @@
-
 var routes = function(app, brokerClient){
 	this.messagingService = new (require('./services/messaging-service.js'))(brokerClient);
 	
@@ -6,10 +5,13 @@ var routes = function(app, brokerClient){
 		
 	});
 	
-	app.post('/private/:uid', (request, response) => {
-		var targetUserIdentifier = request.params.uid;
+	app.post('/private/send', (request, response) => {
 		var messageData = request.body;
-		messagingService.sendMessage(messageData, targetUserIdentifier);
+		messagingService.sendMessage(messageData);
+	});
+	
+	app.post('/private/decodeMessage', (request, response) => {
+			
 	});
 }
 

@@ -1,13 +1,12 @@
 var factories = {
-	constructMessagingPayLoad(messageDetails, recipient) {
+	constructMessagingPayLoad(messageDetails) {
 		return {
 			version: "1.0.0",
-			recipient: recipient,
-			sender: messageDetails.senderUserIdentifier,
+			recipientIdentifier: messageDetails.recipientUserIdentifier,
+			senderIdentifier: messageDetails.senderUserIdentifier,
 			content: messageDetails.content
 		}	
 	},
 };
-
 
 module.exports = factories;
