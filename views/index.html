@@ -12,10 +12,10 @@
 	ws.addEventListener("message", function(e) {
     var msgObj = JSON.parse(e.data);
 	var body = {
-		recipientUserIdentifier: msgObj.recipientIdentifier,
+		recipientIdentifier: msgObj.recipientIdentifier,
 		token: "testtoken", //FIX THIS
 		content: msgObj.content,
-		senderUserIdentifier: msgObj.senderIdentifier,
+		senderIdentifier: msgObj.senderIdentifier,
 		sentOn: msgObj.queuedOn
 	}
 	
