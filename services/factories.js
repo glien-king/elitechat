@@ -7,7 +7,8 @@ var factories = {
 			version: "1.0.0",
 			recipientIdentifier: messageDetails.recipientUserIdentifier,
 			senderIdentifier: messageDetails.senderUserIdentifier,
-			content: encryptedMessage
+			content: encryptedMessage,
+			queuedOn: new Date()
 		}	
 	},
 };

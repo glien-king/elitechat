@@ -1,4 +1,4 @@
-var brokerClient = function(amqp, config){
+var brokerClient = function(amqp, config, socketServer){
  	this.channel = null;	
 	this.setupBrokerConnection = () => {
 		var self = this;		
@@ -7,18 +7,22 @@ var brokerClient = function(amqp, config){
 				conn.createChannel(function(err, ch) {
 					self.channel = ch;
 					ch.assertQueue(config.messagingQueueName, {durable: false});
+					ch.consume(config.messagingQueueName, self.consumeMessage, {noAck: true});					
 					resolve();					
 				});
 
 			});			
 		});
-		 
 	 };
 	 
 	this.publishMessage = (message) => {
 		this.channel.sendToQueue(config.messagingQueueName, new Buffer(message));
+	};
+	
+	this.consumeMessage = (message) => {
+		var content = message.content.toString();
+		socketServer.broadcast(content);
 	}
-	 
  } 
  
  module.exports = brokerClient;

@@ -20,8 +20,8 @@ var webSocketServer = {
 		});
 	},
 	broadcast: (message) => {
-		for(var i in clients){
-			clients[i].sendUTF(message);
+		for(var i in connectedClients){
+			connectedClients[i].sendUTF(message);
 		}
 	}
 };
