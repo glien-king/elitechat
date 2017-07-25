@@ -28,7 +28,8 @@ var Routes = function(app, brokerClient){
 		
 	app.post('/private/decodeMessage', async (request, response) => {
 		resetServices();
-		var verificationResponse = await messagingService.verifyMessageRecipient(request.body.recipientUserIdentifier, request.body.token, request.body.content);
+		var body = request.body;  
+		var verificationResponse = await messagingService.verifyMessageRecipient(body.senderUserIdentifier, body.recipientUserIdentifier, body.sentOn, body.token, body.content);
 		response.send(verificationResponse);
 	});
 }

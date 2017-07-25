@@ -14,7 +14,9 @@
 	var body = {
 		recipientUserIdentifier: msgObj.recipientIdentifier,
 		token: "testtoken", //FIX THIS
-		content: msgObj.content
+		content: msgObj.content,
+		senderUserIdentifier: msgObj.senderIdentifier,
+		sentOn: msgObj.queuedOn
 	}
 	
 	var xhttp = new XMLHttpRequest();

@@ -12,12 +12,17 @@ var MessagingService = function(broker, dataContext){
 		broker.publishMessage(JSON.stringify(payload));
 	}
 		
-	this.verifyMessageRecipient = async (recipientUserIdentifier, userToken, content) => {
+	this.verifyMessageRecipient = async (senderUserIdentifier, recipientUserIdentifier, sentOn, userToken, content) => {
 		var recipientToken = await this.userService.getTokenByIdentifier(recipientUserIdentifier);
 		if(userToken == recipientToken){
-			return helpers.decryptData(content);
+			var sender = await this.userService.getUserNameByIdentifier(senderUserIdentifier);
+			return {
+				content: helpers.decryptData(content),
+				sender: sender,
+				sentOn: sentOn
+			}
 		} else {
-			return '';
+			return {};
 		}
 	}
 
