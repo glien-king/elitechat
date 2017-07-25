@@ -1,4 +1,4 @@
-var brokerClient = function(amqp, config, socketServer){
+var BrokerClient = function(amqp, config, socketServer){
  	this.channel = null;	
 	this.setupBrokerConnection = () => {
 		var self = this;		
@@ -25,4 +25,4 @@ var brokerClient = function(amqp, config, socketServer){
 	}
  } 
  
- module.exports = brokerClient;
+ module.exports = BrokerClient;

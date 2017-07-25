@@ -1,4 +1,4 @@
-var routes = function(app, brokerClient){
+var Routes = function(app, brokerClient){
 	this.messagingService = new (require('./services/messaging-service.js'))(brokerClient);
 	
 	app.get('/', (request, response) => {
@@ -15,4 +15,4 @@ var routes = function(app, brokerClient){
 	});
 }
 
-module.exports = routes;
+module.exports = Routes;

@@ -1,6 +1,6 @@
 var factories = require('./factories.js');
 
-var messagingService = function(broker){
+var MessagingService = function(broker){
 	
 	this.sendMessage = (messageDetails) => {	
 		var payload = factories.constructMessagingPayLoad(messageDetails);
@@ -12,4 +12,4 @@ var messagingService = function(broker){
 
 }
 
-module.exports = messagingService;
+module.exports = MessagingService;
