@@ -29,8 +29,8 @@ var Routes = function(app, brokerClient){
 	app.post('/user/subscribe', async (request, response) => {
 		resetServices();
 		var body = request.body; 
-		var token = await this.userService.subscribeUser(body.name);
-		response.send(token);
+		var subscriptionInfo = await this.userService.subscribeUser(body.name);
+		response.send(subscriptionInfo);
 	});
 }
 

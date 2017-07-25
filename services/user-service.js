@@ -17,7 +17,10 @@ var UserService = function(dataContext){
 		var token = helpers.generateGuid(), identifier = helpers.generateGuid();
 		var user = factories.constructUserModel(name, token, identifier);
 		dataContext.users.insert(user);
-		return token;
+		return {
+			token: token, 
+			identifier: identifier
+		};
 	}
 }
 

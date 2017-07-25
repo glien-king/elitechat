@@ -5,30 +5,130 @@
  
  <body>
 	<h1>Welcome to Elite Chat</h1>
+	
+	<div id="Subscribe">	
+		<h3>Choose your user name</h3>
+		<input type="text" id="UserName"/>
+		<input type="button" id="SubmitUserName" value="Continue" onclick="subscribeUser()"/>
+	</div>
+	
+	<div id="Message">	
+		<h3>Send an instant message to: </h3>
+		<input type="text" id="TargetUserIdentifier"/>
+		<br/>
+		<div class="h20"></div>
+		<h3>Type your message: </h3>
+		<textarea id="MessageContent"></textarea>
+		<br/>
+		<div class="h20"></div>
+		<input type="button" id="SendMessage" value="Send" onclick="sendMessage()"/>
+	</div>
+	
  </body>
  
  <script>
-	var ws = new WebSocket('ws://localhost:3172', 'echo-protocol');
+	var webSocketHost = "localhost:3172";
+	var applicationHost = "http://localhost:4381";
+	var tokenCookieName = "UserToken";
+	var identifierCookieName = "UserIdentifier";
+  	var ws = new WebSocket('ws://' + webSocketHost, 'echo-protocol');
+
 	ws.addEventListener("message", function(e) {
-    var msgObj = JSON.parse(e.data);
-	var body = {
-		recipientIdentifier: msgObj.recipientIdentifier,
-		token: "testtoken", //FIX THIS
-		content: msgObj.content,
-		senderIdentifier: msgObj.senderIdentifier,
-		sentOn: msgObj.queuedOn
+		var msgObj = JSON.parse(e.data);
+		var body = {
+			recipientIdentifier: msgObj.recipientIdentifier,
+			token: readCookie(tokenCookieName),
+			content: msgObj.content,
+			senderIdentifier: msgObj.senderIdentifier,
+			sentOn: msgObj.queuedOn
+		}		
+		var url = applicationHost + "/private/decodeMessage";
+		var callBack = (xhttp) => {
+			if(xhttp == {}) return;
+			alert(xhttp.response)
+		};
+		postRequest(url, body, callBack);	
+	});
+	
+	function subscribeUser(){
+		var userName = document.getElementById("UserName").value;
+		if(userName == '' || userName == undefined) return;
+		var url = applicationHost + "/user/subscribe";
+		var callBack = (xhttp) => {
+			var responseObject = JSON.parse(xhttp.response);
+			var token = responseObject.token;
+			var identifier = responseObject.identifier;
+			createCookie(tokenCookieName, token, 100);
+			createCookie(identifierCookieName, identifier, 100);
+			document.getElementById('Subscribe').style.display = 'none';
+			document.getElementById('Message').style.display = 'block';
+		};
+		var body = {
+			name: userName
+		}
+		postRequest(url, body, callBack);
 	}
 	
-	var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-		  alert(xhttp.response);
+	function sendMessage() {
+		var url = applicationHost + "/private/send";
+		var messageContent = document.getElementById("MessageContent").value;
+
+		var body = {
+			senderUserIdentifier: readCookie(identifierCookieName),
+			content: messageContent,
+			recipientUserIdentifier: "71e19cae-dd17-5d3a-96a2-574b8fb7b91a" // FIX THIS!!!!!!!!
 		}
-	};
-	xhttp.open("POST", "http://localhost:4381/private/decodeMessage", true);
-	xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-	xhttp.send(JSON.stringify(body));	
-});
+		var callBack = (xhttp) => {alert("sent successfully")};
+		postRequest(url, body, callBack);
+	}
+	
+	
+	//Helper Functions
+	
+	function postRequest(url, body, callBack){
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+			  callBack(xhttp);
+			}
+		};
+		xhttp.open("POST", url, true);
+		xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+		xhttp.send(JSON.stringify(body));	
+	}
+	
+	function createCookie(name,value,days) {
+		var expires = "";
+		if (days) {
+			var date = new Date();
+			date.setTime(date.getTime() + (days*24*60*60*1000));
+			expires = "; expires=" + date.toUTCString();
+		}
+		document.cookie = name + "=" + value + expires + "; path=/";
+	}
+	
+	function readCookie(name) {
+		var nameEQ = name + "=";
+		var ca = document.cookie.split(';');
+		for(var i=0;i < ca.length;i++) {
+			var c = ca[i];
+			while (c.charAt(0)==' ') c = c.substring(1,c.length);
+			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+		}
+		return null;
+	}	
  </script>
  
+ <style>
+	#Message {
+		display: none;
+	}
+	.h20{
+		height:20px;
+	}
+	
+	.padding-5{
+		padding:5px;
+	}
+ </style>
  </html>
