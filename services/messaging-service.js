@@ -14,7 +14,6 @@ var MessagingService = function(broker, dataContext){
 		
 	this.verifyMessageRecipient = async (recipientUserIdentifier, userToken, content) => {
 		var recipientToken = await this.userService.getTokenByIdentifier(recipientUserIdentifier);
-		console.log(recipientToken);
 		if(userToken == recipientToken){
 			return helpers.decryptData(content);
 		} else {

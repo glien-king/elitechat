@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+ <html>
+ <head>
+ </head>
+ 
+ <body>
+	<h1>Welcome to Elite Chat</h1>
+ </body>
+ 
+ <script>
+	var ws = new WebSocket('ws://localhost:3172', 'echo-protocol');
+	ws.addEventListener("message", function(e) {
+    var msgObj = JSON.parse(e.data);
+	var body = {
+		recipientUserIdentifier: msgObj.recipientIdentifier,
+		token: "testtoken", //FIX THIS
+		content: msgObj.content
+	}
+	
+	var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+		  alert(xhttp.response);
+		}
+	};
+	xhttp.open("POST", "http://localhost:4381/private/decodeMessage", true);
+	xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	xhttp.send(JSON.stringify(body));	
+});
+ </script>
+ 
+ </html>

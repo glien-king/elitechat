@@ -3,7 +3,7 @@ var BrokerClient = function(amqp, config, socketServer){
 	this.setupBrokerConnection = () => {
 		var self = this;		
 		return new Promise((resolve, reject) => {			
-			amqp.connect(config.rabbitMqEndpoint, function(err, conn) {
+			amqp.connect(config.rabbitMqEndpoint, function(err, conn) {			
 				conn.createChannel(function(err, ch) {
 					self.channel = ch;
 					ch.assertQueue(config.messagingQueueName, {durable: false});

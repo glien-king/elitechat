@@ -9,8 +9,15 @@ var Routes = function(app, brokerClient){
 		this.userService = new (require('./services/user-service.js'))(client.getContext());
 	}
 	
+	app.use(function(req, res, next) { //CORS
+		res.header("Access-Control-Allow-Origin", "*");
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+		next();
+	});
+	
 	app.get('/', (request, response) => {
-		response.send("Welcome to the Elite chat");
+		response.sendFile(__dirname + '/views/index.html');
 	});
 	
 	app.post('/private/send', (request, response) => {
@@ -18,11 +25,11 @@ var Routes = function(app, brokerClient){
 		messagingService.sendMessage(request.body);
 		response.send("OK");
 	});
-	
+		
 	app.post('/private/decodeMessage', async (request, response) => {
 		resetServices();
-		var body = request.body;
-		response.send(await messagingService.verifyMessageRecipient(body.recipientUserIdentifier, body.token, body.content));	
+		var verificationResponse = await messagingService.verifyMessageRecipient(request.body.recipientUserIdentifier, request.body.token, request.body.content);
+		response.send(verificationResponse);
 	});
 }
 
