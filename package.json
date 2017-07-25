@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/asarnaout/elitechat/issues"
   },
-  "homepage": "https://github.com/asarnaout/elitechat#readme"
+  "homepage": "https://github.com/asarnaout/elitechat#readme",
+  "dependencies": {
+    "amqplib": "^0.5.1",
+    "body-parser": "^1.17.2",
+    "crypto-js": "^3.1.9-1",
+    "express": "^4.15.3",
+    "websocket": "^1.0.24"
+  }
 }
