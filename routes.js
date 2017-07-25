@@ -1,17 +1,28 @@
+var client = require('./data/mongo-client.js');
+
 var Routes = function(app, brokerClient){
-	this.messagingService = new (require('./services/messaging-service.js'))(brokerClient);
+	this.messagingService = null;
+	this.userService = null;
+	
+	this.resetServices = () => {
+		this.messagingService = new (require('./services/messaging-service.js'))(brokerClient, client.getContext());
+		this.userService = new (require('./services/user-service.js'))(client.getContext());
+	}
 	
 	app.get('/', (request, response) => {
-		
+		response.send("Welcome to the Elite chat");
 	});
 	
 	app.post('/private/send', (request, response) => {
-		var messageData = request.body;
-		messagingService.sendMessage(messageData);
+		resetServices();
+		messagingService.sendMessage(request.body);
+		response.send("OK");
 	});
 	
-	app.post('/private/decodeMessage', (request, response) => {
-			
+	app.post('/private/decodeMessage', async (request, response) => {
+		resetServices();
+		var body = request.body;
+		response.send(await messagingService.verifyMessageRecipient(body.recipientUserIdentifier, body.token, body.content));	
 	});
 }
 
