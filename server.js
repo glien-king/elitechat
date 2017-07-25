@@ -1,7 +1,19 @@
+const bodyParser= require('body-parser');
 const config = require('./config.js');
-var app = require('express')();
-const routes = require('./routes.js')(app);
+const app = require('express')();
+const handleRoutes = require('./routes.js');
+const amqp = require('amqplib/callback_api');
+const brokerClient = new (require('./broker-client.js'))(amqp, config);
 
-app.listen(config.port);
 
-console.log('elite-chat: listening to connections on port: ' + config.port);
+setupServer = async () => {
+	app.use(bodyParser.json());
+	await brokerClient.setupBrokerConnection();
+	app.listen(config.port);
+	console.log('elite-chat: listening to connections on port: ' + config.port);
+	handleRoutes(app);
+}
+
+setupServer();
+
+
