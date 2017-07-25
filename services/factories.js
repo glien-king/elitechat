@@ -11,6 +11,13 @@ var factories = {
 			queuedOn: new Date()
 		}	
 	},
+	constructUserModel(name, token, identifier) {
+		return {
+			name: name,
+			uniqueidentifier: identifier,
+			token: token,
+		}	
+	}
 };
 
 module.exports = factories;

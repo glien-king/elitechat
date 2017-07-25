@@ -8,14 +8,7 @@ var Routes = function(app, brokerClient){
 		this.messagingService = new (require('./services/messaging-service.js'))(brokerClient, client.getContext());
 		this.userService = new (require('./services/user-service.js'))(client.getContext());
 	}
-	
-	app.use(function(req, res, next) { //CORS
-		res.header("Access-Control-Allow-Origin", "*");
-		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-	    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-		next();
-	});
-	
+		
 	app.get('/', (request, response) => {
 		response.sendFile(__dirname + '/views/index.html');
 	});
@@ -31,6 +24,13 @@ var Routes = function(app, brokerClient){
 		var body = request.body;  
 		var verificationResponse = await messagingService.verifyMessageRecipient(body.senderIdentifier, body.recipientIdentifier, body.sentOn, body.token, body.content);
 		response.send(verificationResponse);
+	});
+		
+	app.post('/user/subscribe', async (request, response) => {
+		resetServices();
+		var body = request.body; 
+		var token = await this.userService.subscribeUser(body.name);
+		response.send(token);
 	});
 }
 
