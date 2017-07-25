@@ -93,6 +93,8 @@
 		postRequest(url, body, callBack);
 	}
 	
+	setInterval(showUsers, 7000);
+
 	function sendMessage() {
 		var url = applicationHost + "/private/send";
 		var messageContent = document.getElementById("MessageContent").value;
@@ -111,6 +113,7 @@
 		var url = applicationHost + "/user/getAllUsers";
 		var callBack = (xhttp) => {	
 			var responseJson = JSON.parse(xhttp.response);
+			document.getElementById("AllUsers").innerHTML = "";
 			for(var i in responseJson){
 				var user = responseJson[i];
 				var node = document.createElement("span"); 
