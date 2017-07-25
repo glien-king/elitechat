@@ -24,6 +24,10 @@
 		<br/>
 		<div class="h20"></div>
 		<input type="button" id="SendMessage" value="Send" onclick="sendMessage()"/>
+		<div class="h20"></div>
+		<div class="h20"></div>
+		<h3>Feed</h3>
+		<div id="Feed"></div>
 	</div>
 	
  </body>
@@ -46,8 +50,23 @@
 		}
 		var url = applicationHost + "/private/decodeMessage";
 		var callBack = (xhttp) => {
-			if(xhttp.response == {}) return;
-			alert(xhttp.response)
+			var responseObj = JSON.parse(xhttp.response);
+			if(responseObj == {}) return;
+			var sender = document.createElement("span"); 
+			sender.innerText = responseObj.sender;
+			document.getElementById("Feed").appendChild(sender);
+			document.getElementById("Feed").appendChild(document.createElement("br"));
+			
+			var date = document.createElement("span"); 
+			date.innerText = responseObj.sentOn;
+			document.getElementById("Feed").appendChild(date);
+			document.getElementById("Feed").appendChild(document.createElement("br"));
+			
+			var content = document.createElement("span"); 
+			content.innerText = responseObj.content;
+			document.getElementById("Feed").appendChild(content);
+			document.getElementById("Feed").appendChild(document.createElement("br"));
+			document.getElementById("Feed").appendChild(document.createElement("br"));
 		};
 		postRequest(url, body, callBack);	
 	});
@@ -106,7 +125,6 @@
 		}
 		getRequest(url, callBack);
 	}
-	
 	
 	//Helper Functions
 	
