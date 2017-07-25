@@ -22,6 +22,10 @@ var UserService = function(dataContext){
 			identifier: identifier
 		};
 	}
+	
+	this.getAllUserNamesAndIdentifiers = async() => {
+		return (await dataContext.users.project({uniqueidentifier: 1, name: 1, _id: 0}).query());
+	}
 }
 
 module.exports = UserService;

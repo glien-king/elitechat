@@ -41,10 +41,11 @@
 			content: msgObj.content,
 			senderIdentifier: msgObj.senderIdentifier,
 			sentOn: msgObj.queuedOn
-		}		
+		}
+		alert('received message');
 		var url = applicationHost + "/private/decodeMessage";
 		var callBack = (xhttp) => {
-			if(xhttp == {}) return;
+			if(xhttp.response == {}) return;
 			alert(xhttp.response)
 		};
 		postRequest(url, body, callBack);	
