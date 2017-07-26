@@ -1,14 +1,19 @@
 const bodyParser= require('body-parser');
 const config = require('./config.js');
-const app = require('express')();
+const express = require('express');
+const app = express();
 const handleRoutes = require('./routes.js');
 const amqp = require('amqplib/callback_api');
 const webSocketServer = require('./websocket-server.js');
 const brokerClient = new (require('./services/broker-client.js'))(amqp, config, webSocketServer);
+const path = require('path')
+
 var mongoClient = require('./data/mongo-client');
 
 setupServer = async () => {
 	app.use(bodyParser.json());
+	app.use("/styles", express.static(__dirname + '/views/css'));
+	app.use("/scripts", express.static(__dirname + '/views/js'));
 	await brokerClient.setupBrokerConnection();
 	await mongoClient.initializeDbConnection(config);	
 	webSocketServer.setupWebSocketServer();
