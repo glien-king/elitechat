@@ -48,6 +48,10 @@ function MongoSet(name, db){
 	this.exists = async (obj) => {
 		return parseInt(await this.count(obj)) > 0;
 	};
+	
+	this.remove = (criteria) => {
+		return db.collection(this.name).remove(criteria);
+	}
 
 	this.reset = () => {
 		this.projection = {};	

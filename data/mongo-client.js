@@ -10,7 +10,7 @@ var client = {
 			if(self.db != null) return;
 			MongoClient.connect(config.mongoConnectionString, async (err, database) => {
 				self.db = database;
-				console.log('connected to mongo');		
+				//console.log('connected to mongo');		
 				(await database.listCollections().toArray()).map(col => {
 					if(col.name != 'system.indexes') 
 						mongoContext[col.name] = new collectionSet(col.name, self.db);

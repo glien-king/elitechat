@@ -26,6 +26,10 @@ var UserService = function(dataContext){
 	this.getAllUserNamesAndIdentifiers = async() => {
 		return (await dataContext.users.project({uniqueidentifier: 1, name: 1, _id: 0}).query());
 	}
+	
+	this.deleteUser = async(identifier) => {
+		return (await dataContext.users.remove({uniqueidentifier: identifier}));
+	}
 }
 
 module.exports = UserService;
