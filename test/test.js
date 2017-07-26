@@ -68,7 +68,6 @@ describe('MessagingService', function() {
 		var identifier = user.identifier;
 		var token = user.token;
 		var verificationResult = await messagingService.verifyMessageRecipient(identifier, identifier, null, token, 'Test');
-		console.log(verificationResult);
 		await userService.deleteUser(identifier);
 		var verified = !(Object.keys(verificationResult).length === 0 && verificationResult.constructor === Object);
 		assert.equal(true, verified);
