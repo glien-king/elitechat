@@ -1,5 +1,5 @@
-	var webSocketHost = "localhost:3172";
-	var applicationHost = "http://localhost:4381";
+	var webSocketHost = "34.193.6.35:3172";
+	var applicationHost = "http://34.193.6.35:4381";
   	var ws = new WebSocket('ws://' + webSocketHost, 'echo-protocol');
 	
 	ws.addEventListener("message", function(e) {
