@@ -1,4 +1,4 @@
-var BrokerClient = function(amqp, config, socketServer){
+var BrokerClient = function(amqp, config){
  	this.channel = null;	
 	this.setupBrokerConnection = () => {
 		var self = this;		
@@ -22,7 +22,6 @@ var BrokerClient = function(amqp, config, socketServer){
 	
 	this.consumeMessage = (message) => {
 		var content = message.content.toString();
-		socketServer.broadcast(content);
 	}
  } 
  
