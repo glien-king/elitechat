@@ -1,4 +1,4 @@
-var socketServer = function(io) {
+var SocketServer = function(io) {
 	
 	this.clients = [];
 	
@@ -10,8 +10,7 @@ var socketServer = function(io) {
 			self.clients.push(socketId);
 			
 			socket.on('msg', (content) => {
-				console.log(content);
-				io.sockets.socket(self.clients[content.target]).emit("msg", content.payload);
+				//io.sockets.socket(self.clients[content.target]).emit("msg", content.payload);
 			});
 			
 			socket.on('disconnect', () => {
@@ -25,4 +24,4 @@ var socketServer = function(io) {
 	
 }
 
-module.exports = socketServer;
+module.exports = SocketServer;

@@ -11,11 +11,10 @@ var factories = {
 			queuedOn: new Date()
 		}	
 	},
-	constructUserModel(name, token, identifier) {
+	constructUserModel(name, identifier) {
 		return {
 			name: name,
 			uniqueidentifier: identifier,
-			token: token,
 		}	
 	}
 };
