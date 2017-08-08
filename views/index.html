@@ -2,38 +2,10 @@
  <html>
  <head>
    <link rel="stylesheet" type="text/css" href="/styles/style.css">
-
  </head>
-  <script src="/scripts/main.js"> </script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+ <script src="/scripts/main.js"> </script>
  <body>
 	<h1>Welcome to Elite Chat</h1>
-	
-	<div id="Subscribe">	
-		<h3>Choose your user name</h3>
-		<input type="text" id="UserName"/>
-		<input type="button" id="SubmitUserName" value="Continue" onclick="subscribeUser()"/>
-	</div>
-	
-	<div id="Message">	
-		<h2>Choose Recepient: </h2>
-		<div id="AllUsers"></div>
-		<h3>Send an instant message to: </h3>
-		<input type="text" id="TargetUserIdentifier" class="hidden"/>
-		<input type="text" id="TargetUserName" disabled/>
-		<br/>
-		<div class="h20"></div>
-		<h3>Type your message: </h3>
-		<textarea id="MessageContent"></textarea>
-		<br/>
-		<div class="h20"></div>
-		<input type="button" id="SendMessage" value="Send" onclick="sendMessage()"/>
-		<div class="h20"></div>
-		<div class="h20"></div>
-		<h3>Feed</h3>
-		<div id="Feed"></div>
-		<input class="hidden" id="TokenPlaceholder" />
-		<input class="hidden" id="IdentifierPlaceholder" />
-	</div>
-	
  </body>
  </html>
