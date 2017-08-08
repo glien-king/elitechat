@@ -24,6 +24,7 @@
     "mocha": "^3.4.2",
     "mongodb": "^2.2.30",
     "path": "^0.12.7",
-    "serve-favicon": "^2.4.3"
+    "serve-favicon": "^2.4.3",
+    "socket.io": "^2.0.3"
   }
 }
