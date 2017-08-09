@@ -10,7 +10,7 @@ var SocketServer = function(io) {
 			self.clients.push(socketId);
 			
 			socket.on('msg', (content) => {
-				//io.sockets.socket(self.clients[content.target]).emit("msg", content.payload);
+				io.to(self.clients.indexOf(content.target)).emit('msg', content.payload)
 			});
 			
 			socket.on('disconnect', () => {
@@ -20,7 +20,7 @@ var SocketServer = function(io) {
 		  
 		});
 	}
-	
+		
 	
 }
 

@@ -1,11 +1,9 @@
 var client = require('./data/mongo-client.js');
 
 var Routes = function(app, brokerClient){
-	this.messagingService = null;
 	this.userService = null;
 	
 	this.resetServices = () => {
-		this.messagingService = new (require('./services/messaging-service.js'))(brokerClient, client.getContext());
 		this.userService = new (require('./services/user-service.js'))(client.getContext());
 	}
 		
