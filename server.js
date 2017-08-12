@@ -10,7 +10,7 @@ const path = require('path');
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const mongoClient = require('./data/mongo-client');
-const socketServer = new (require('./socket-server.js'))(io);
+const socketServer = new (require('./socket-server.js'))(io, brokerClient);
 
 setupServer = async () => {
 	app.use(bodyParser.json());

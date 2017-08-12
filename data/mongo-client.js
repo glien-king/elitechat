@@ -1,6 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
-var mongoContext = require('./mongo-context.js');
-var collectionSet = require('./mongo-set.js');
+const mongoContext = require('./mongo-context.js');
+const collectionSet = require('./mongo-set.js');
 
 var client = {
 	db: null,
@@ -10,7 +10,6 @@ var client = {
 			if(self.db != null) return;
 			MongoClient.connect(config.mongoConnectionString, async (err, database) => {
 				self.db = database;
-				//console.log('connected to mongo');		
 				(await database.listCollections().toArray()).map(col => {
 					if(col.name != 'system.indexes') 
 						mongoContext[col.name] = new collectionSet(col.name, self.db);

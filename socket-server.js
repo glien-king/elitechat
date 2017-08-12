@@ -1,6 +1,6 @@
-var SocketServer = function(io) {
+var SocketServer = function(io, broker) {	
 	
-	this.clients = [];
+	this.clients = [];	
 	
 	this.initializeSocketServer = () => {
 		var self = this;
@@ -9,15 +9,14 @@ var SocketServer = function(io) {
 			
 			self.clients.push(socketId);
 			
-			socket.on('msg', (content) => {
-				io.to(self.clients.indexOf(content.target)).emit('msg', content.payload)
+			socket.on('msg', async (content) => {
+				await io.to(self.clients.indexOf(content.target)).emit('msg', content.payload);
+				await broker.publishMessage(content.payload);
 			});
 			
-			socket.on('disconnect', () => {
-				self.clients.splice(self.clients.indexOf(socketId), 1);
-			});
-		  
-		  
+			socket.on('disconnect', async () => {
+				await self.clients.splice(self.clients.indexOf(socketId), 1);
+			}); 
 		});
 	}
 		

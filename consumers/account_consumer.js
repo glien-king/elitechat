@@ -13,7 +13,7 @@ setupBrokerConnection = () => {
 
 
 consumeMessage = (message) => {
-	var content = message.content.toString();
+	var content = message.content;
 }
 
 setupBrokerConnection();
