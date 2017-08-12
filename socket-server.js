@@ -1,22 +1,29 @@
-var SocketServer = function() {	
-	
-	this.clients = [];	
+const cookie = require('cookie');
+const factories = require('./services/factories');
+const userSocketMappingKeyName = "users_socket_map";
+
+var SocketServer = function(redisClient) {	
+	this.redisClient = redisClient;
 	
 	this.initializeSocketServer = (io, messagingBrokerClient) => {
 		var self = this;
-		io.on('connection', function(socket){
+		io.on('connection', async function(socket){
 			var socketId = socket.id;
-			
-			self.clients.push(socketId);
+			var userIdentifier = cookie.parse(socket.handshake.headers['cookie']).UserIdentifier;
+			self.redisClient.storeHashSetField(userSocketMappingKeyName, userIdentifier, socketId);	
 			
 			socket.on('msg', async (content) => {
-				await io.to(self.clients.indexOf(content.target)).emit('msg', content.payload);
-				await messagingBrokerClient.publishMessage(content.payload);
+				self.redisClient.getHashSetField(userSocketMappingKeyName, content.targetIdentifier, async (err, reply) => {
+					var targetSocket = reply.toString();					
+					await io.to(targetSocket).emit('msg', content.payload);
+				});
+				var messagingQueuePayload = factories.constructMessagingPayLoad({content: content.payload, senderIdentifier: userIdentifier, recipientIdentifier: content.targetIdentifier}, 1)
+				await messagingBrokerClient.publishMessage(JSON.stringify(messagingQueuePayload));
 			});
 			
-			socket.on('disconnect', async () => {
-				await self.clients.splice(self.clients.indexOf(socketId), 1);
-			}); 
+			socket.on('disconnect', () => {
+				//self.redisClient.deleteHashField(userSocketMappingKeyName, userIdentifier);
+			});
 		});
 	}
 		
