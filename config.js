@@ -8,6 +8,7 @@ module.exports = {
 	mailerServer: "gmail",
 	mailerAddress: "<Email>",
 	mailerPassword: "<Password>",
-	redisEndpoint: "",
-	redisDatabase: 0
+	redisEndpoint: "127.0.0.1",
+	redisPort: 6379,
+	redisPassword: "K$PFwSSt{_3Eu/K["
 }

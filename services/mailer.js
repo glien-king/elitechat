@@ -22,7 +22,4 @@ function Mailer(){
 	}
 }
 
-
-
-
 module.exports = Mailer;

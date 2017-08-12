@@ -10,6 +10,7 @@ const io = require('socket.io')(http);
 const mongoClient = require('./data/mongo-client');
 const socketServer = new (require('./socket-server.js'))();
 const brokerClientFactory = require('./services/broker-client-factory.js');
+const redisClient = new (require('./data/redis-client'))(config);
 
 setupServer = async () => {
 	app.use(bodyParser.json());
