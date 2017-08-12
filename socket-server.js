@@ -1,8 +1,8 @@
-var SocketServer = function(io, broker) {	
+var SocketServer = function() {	
 	
 	this.clients = [];	
 	
-	this.initializeSocketServer = () => {
+	this.initializeSocketServer = (io, messagingBrokerClient) => {
 		var self = this;
 		io.on('connection', function(socket){
 			var socketId = socket.id;
@@ -11,7 +11,7 @@ var SocketServer = function(io, broker) {
 			
 			socket.on('msg', async (content) => {
 				await io.to(self.clients.indexOf(content.target)).emit('msg', content.payload);
-				await broker.publishMessage(content.payload);
+				await messagingBrokerClient.publishMessage(content.payload);
 			});
 			
 			socket.on('disconnect', async () => {

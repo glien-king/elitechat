@@ -1,5 +1,7 @@
 const config = require('../config.js');
-var cryptoJs = require("crypto-js");
+const cryptoJs = require("crypto-js");
+const SHA256 = require("crypto-js/sha256");
+
 
 var helpers = {
 	encryptData: (data) => {
@@ -13,6 +15,9 @@ var helpers = {
 		   return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
 		};
 		return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+	},
+	hashData: (data) => {
+		return SHA256(data).toString();
 	}
 };
 

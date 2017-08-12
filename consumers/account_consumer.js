@@ -17,7 +17,7 @@ setupBrokerConnection = async () => {
 	});	
 };
 
-consumeMessage = (message) => {	
+consumeMessage = (message) => {
 	var payload = JSON.parse(message.content.toString());	
 	var context = mongoClient.getContext();	
 	

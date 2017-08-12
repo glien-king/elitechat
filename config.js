@@ -6,6 +6,6 @@ module.exports = {
 	encryptionKey: "f4accdb620f84e9ba991647304bcaed5",
 	mongoConnectionString: "mongodb://asamgdla:qwerty@ds119533.mlab.com:19533/elitechat",
 	mailerServer: "gmail",
-	mailerAddress: "<Email>",
-	mailerPassword: "<Password>"
+	mailerAddress: "305secs@gmail.com",
+	mailerPassword: "Sarumanofmanycolours"
 }
