@@ -9,7 +9,6 @@ var BrokerClient = function(amqp, config){
 					ch.assertQueue(config.messagingQueueName, {durable: false});
 					resolve();		
 				});
-
 			});			
 		});
 	 };

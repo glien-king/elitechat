@@ -11,10 +11,15 @@ var factories = {
 			queuedOn: new Date()
 		}	
 	},
-	constructUserModel(name, identifier) {
+	constructUserDocument(name, identifier, email, password, birthdate, gender) {
 		return {
 			name: name,
-			uniqueidentifier: identifier,
+			identifier: identifier,
+			email: email,
+			password: password,
+			birthdate: birthdate,
+			gender: gender,
+			createdOn: new Date()
 		}	
 	}
 };
