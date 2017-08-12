@@ -7,5 +7,7 @@ module.exports = {
 	mongoConnectionString: "mongodb://asamgdla:qwerty@ds119533.mlab.com:19533/elitechat",
 	mailerServer: "gmail",
 	mailerAddress: "<Email>",
-	mailerPassword: "<Password>"
+	mailerPassword: "<Password>",
+	redisEndpoint: "",
+	redisDatabase: 0
 }
