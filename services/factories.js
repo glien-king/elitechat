@@ -5,8 +5,8 @@ var factories = {
 		var encryptedMessage = helpers.encryptData(messageDetails.content);		
 		return {
 			version: "1.0.0",
-			recipientIdentifier: messageDetails.recipientUserIdentifier,
-			senderIdentifier: messageDetails.senderUserIdentifier,
+			recipientIdentifier: messageDetails.recipientIdentifier,
+			senderIdentifier: messageDetails.senderIdentifier,
 			content: encryptedMessage,
 			queuedOn: new Date()
 		}	
@@ -21,7 +21,15 @@ var factories = {
 			gender: gender,
 			createdOn: new Date()
 		}	
-	}
+	},
+	constructMessageDocument(sender, recipient, content, queuedOn) {
+		return {
+			sender: sender,
+			recipient: recipient,
+			content: content,
+			queuedOn: queuedOn
+		}	
+	},
 };
 
 module.exports = factories;
