@@ -2,6 +2,7 @@ const amqp = require('amqplib/callback_api');
 const config = require('../config.js');
 const mongoClient = require('../data/mongo-client.js');
 const factories = require('../services/factories.js');
+const messagingPayloadType = require('../services/global-fields').messagingPayloadType;
 
 setupBrokerConnection = async () => {
 	await mongoClient.initializeDbConnection(config);
@@ -19,7 +20,7 @@ consumeMessage = async (message) => {
 	var context = mongoClient.getContext();
 	
 	switch(payload.payloadType){
-		case 1: await addMessage(payload, context); break;
+		case messagingPayloadType.addMessage: await addMessage(payload, context); break;
 		default: break;
 	}
 }

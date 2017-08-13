@@ -1,4 +1,4 @@
-var helpers = require('./helpers.js');
+const helpers = require('./helpers.js');
 
 var factories = {
 	constructMessagingPayLoad(messageDetails, type) {

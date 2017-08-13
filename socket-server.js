@@ -1,5 +1,6 @@
 const cookie = require('cookie');
 const factories = require('./services/factories');
+const global = require('./services/global-fields');
 const userSocketMappingKeyName = "users_socket_map";
 
 var SocketServer = function(redisClient) {	
@@ -13,11 +14,19 @@ var SocketServer = function(redisClient) {
 			self.redisClient.storeHashSetField(userSocketMappingKeyName, userIdentifier, socketId);	
 			
 			socket.on('msg', async (content) => {
+				
 				self.redisClient.getHashSetField(userSocketMappingKeyName, content.targetIdentifier, async (err, reply) => {
 					var targetSocket = reply.toString();					
 					await io.to(targetSocket).emit('msg', content.payload);
 				});
-				var messagingQueuePayload = factories.constructMessagingPayLoad({content: content.payload, senderIdentifier: userIdentifier, recipientIdentifier: content.targetIdentifier}, 1)
+				
+				var messagingQueuePayload = factories.constructMessagingPayLoad(
+				{
+					content: content.payload, 
+					senderIdentifier: userIdentifier, 
+					recipientIdentifier: content.targetIdentifier
+				}, global.messagingPayloadType.addMessage);
+				
 				await messagingBrokerClient.publishMessage(JSON.stringify(messagingQueuePayload));
 			});
 			
@@ -26,8 +35,6 @@ var SocketServer = function(redisClient) {
 			});
 		});
 	}
-		
-	
 }
 
 module.exports = SocketServer;

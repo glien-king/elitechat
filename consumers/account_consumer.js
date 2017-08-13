@@ -5,6 +5,7 @@ const factories = require('../services/factories.js');
 const helpers = require('../services/helpers.js');
 const mailer = new (require('../services/mailer.js'))();
 const fs = require('fs');
+const accountsPayloadType = require('../services/global-fields').accountsPayloadType;
 
 setupBrokerConnection = async () => {
 	await mongoClient.initializeDbConnection(config);
@@ -22,7 +23,7 @@ consumeMessage = (message) => {
 	var context = mongoClient.getContext();	
 	
 	switch(payload.payloadType){
-		case 1: addUser(payload, context); break;
+		case accountsPayloadType.addUser: addUser(payload, context); break;
 		default: break;
 	}
 }

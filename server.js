@@ -12,7 +12,7 @@ const brokerClientFactory = require('./services/broker-client-factory.js');
 const redisClient = new (require('./data/redis-client'))(config);
 const socketServer = new (require('./socket-server.js'))(redisClient);
 
-setupServer = async () => {
+const setupServer = async () => {
 	app.use(bodyParser.json());
 	app.use("/styles", express.static(__dirname + '/views/css'));
 	app.use("/scripts", express.static(__dirname + '/views/js'));
