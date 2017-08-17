@@ -32,7 +32,7 @@ class MongoSet{
 	}
 
 	async query() {
-		var result = await (this.database.collection(this.name).find(this.filteration, this.projection).toArray());
+		let result = await (this.database.collection(this.name).find(this.filteration, this.projection).toArray());
 		this.reset();
 		return result;
 	}
