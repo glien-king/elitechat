@@ -1,8 +1,8 @@
 const helpers = require('./helpers.js');
 
-var factories = {
+const factories = {
 	constructMessagingPayLoad(messageDetails, type) {
-		var encryptedMessage = helpers.encryptData(messageDetails.content);		
+		let encryptedMessage = helpers.encryptData(messageDetails.content);		
 		return {
 			payloadType: type,
 			version: "1.0.0",
@@ -13,7 +13,7 @@ var factories = {
 		}
 	},
 	constructAccountPayLoad(userDetails, type) {
-		var hashedPassword = helpers.hashData(userDetails.password);
+		let hashedPassword = helpers.hashData(userDetails.password);
 		return {
 			payloadType: type,
 			version: "1.0.0",

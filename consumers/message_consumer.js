@@ -1,11 +1,11 @@
 const amqp = require('amqplib/callback_api');
 const config = require('../config.js');
-const mongoClient = require('../data/mongo-client.js');
+const mongoClient = new (require('../data/mongo-client.js'))(config);
 const factories = require('../services/factories.js');
 const messagingPayloadType = require('../services/global-fields').messagingPayloadType;
 
 setupBrokerConnection = async () => {
-	await mongoClient.initializeDbConnection(config);
+	await mongoClient.initializeDatabaseConnection(config);
 
 	amqp.connect(config.rabbitMqEndpoint, function(err, conn) {			
 		conn.createChannel(function(err, ch) {
@@ -16,8 +16,8 @@ setupBrokerConnection = async () => {
 };
 
 consumeMessage = async (message) => {
-	var payload = JSON.parse(message.content.toString());	
-	var context = mongoClient.getContext();
+	let payload = JSON.parse(message.content.toString());	
+	let context = mongoClient.getContext();
 	
 	switch(payload.payloadType){
 		case messagingPayloadType.addMessage: await addMessage(payload, context); break;
@@ -26,9 +26,9 @@ consumeMessage = async (message) => {
 }
 
 addMessage = async (payload, context) => {
-	var sender = (await context.users.filter({identifier: payload.senderIdentifier}).query())[0];
-	var recipient = (await context.users.filter({identifier: payload.recipientIdentifier}).query())[0];
-	var messageDocument = factories.constructMessageDocument(sender, recipient, payload.content, payload.queuedOn);
+	let sender = (await context.users.filter({identifier: payload.senderIdentifier}).query())[0];
+	let recipient = (await context.users.filter({identifier: payload.recipientIdentifier}).query())[0];
+	let messageDocument = factories.constructMessageDocument(sender, recipient, payload.content, payload.queuedOn);
 	context.messages.insert(messageDocument);
 }
 
