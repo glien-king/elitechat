@@ -1,34 +1,40 @@
 const amqp = require('amqplib/callback_api');
 
-var BrokerClient = function(endpoint, queue){
- 	this.channel = null;	
-	this.setupBrokerConnection = () => {
-		var self = this;		
+class BrokerClient {
+
+	constructor(endpoint, queue) {
+		this.channel = null;
+		this.enpoint = endpoint;
+		this.queue = queue;
+	}
+
+	setupBrokerConnection() {
 		return new Promise((resolve, reject) => {			
-			amqp.connect(endpoint, function(err, conn) {			
-				conn.createChannel(function(err, ch) {
-					self.channel = ch;
-					ch.assertQueue(queue, {durable: false});
+			amqp.connect(this.endpoint, (err, conn) => {			
+				conn.createChannel((err, ch) => {
+					this.channel = ch;
+					ch.assertQueue(this.queue, {durable: false});
 					resolve();		
 				});
 			});			
 		});
-	 };
-	 
-	this.publishMessage = (message) => {
-		this.channel.sendToQueue(queue, new Buffer(message));
-	};
- }
+	 }
+
+	 publishMessage(message) {
+		this.channel.sendToQueue(this.queue, new Buffer(message));
+	}
+	
+}
  
- var clientFactory = {
+let clientFactory = {
 	getMessagingBrokerClient: async (config) => {
-		var client = new BrokerClient(config.rabbitMqEndpoint, config.messagingQueueName);
+		let client = new BrokerClient(config.rabbitMqEndpoint, config.messagingQueueName);
 		await client.setupBrokerConnection();
 		return client;
 	},
 	
 	getAccountsBrokerClient: async (config) => {
-		var client = new BrokerClient(config.rabbitMqEndpoint, config.accountQueueName);
+		let client = new BrokerClient(config.rabbitMqEndpoint, config.accountQueueName);
 		await client.setupBrokerConnection();
 		return client;
 	},

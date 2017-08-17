@@ -1,7 +1,11 @@
 const helpers = require('./helpers.js');
 
-var UserService = function(dataContext){
-	
+class UserService {
+
+    constructor(dataContext) {
+        this.dataContext = dataContext;
+    }
+
 }
 
 module.exports = UserService;

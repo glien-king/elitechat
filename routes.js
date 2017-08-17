@@ -1,7 +1,7 @@
 const factories = require('./services/factories.js');
 const global = require('./services/global-fields');
 
-const Routes = function(app, accountsBrokerClient){
+const handleRoutes = function(app, accountsBrokerClient){
 	
 	app.get('/', (request, response) => {
 		response.sendFile(__dirname + '/views/index.html');
@@ -15,4 +15,4 @@ const Routes = function(app, accountsBrokerClient){
 	});
 }
 
-module.exports = Routes;
+module.exports = handleRoutes;

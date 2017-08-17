@@ -1,7 +1,11 @@
 const helpers = require('./helpers.js');
 
-var MessagingService = function(dataContext){
-	
+class MessagingService {
+
+    constructor(dataContext) {
+        this.dataContext = dataContext;
+    }
+
 }
 
 module.exports = MessagingService;

@@ -3,24 +3,25 @@ const factories = require('./services/factories');
 const global = require('./services/global-fields');
 const userSocketMappingKeyName = "users_socket_map";
 
-var SocketServer = function(redisClient) {	
-	this.redisClient = redisClient;
-	
-	this.initializeSocketServer = (io, messagingBrokerClient) => {
-		var self = this;
-		io.on('connection', async function(socket){
-			var socketId = socket.id;
-			var userIdentifier = cookie.parse(socket.handshake.headers['cookie']).UserIdentifier;
-			self.redisClient.storeHashSetField(userSocketMappingKeyName, userIdentifier, socketId);	
+class SocketServer {
+
+	constructor(redisClient){
+		this.redisClient = redisClient;
+	}
+
+	initializeSocketServer(io, messagingBrokerClient) {
+		io.on('connection', async (socket) => {
+			let socketId = socket.id;
+			let userIdentifier = cookie.parse(socket.handshake.headers['cookie']).UserIdentifier;
+			this.redisClient.storeHashSetField(userSocketMappingKeyName, userIdentifier, socketId);
 			
-			socket.on('msg', async (content) => {
-				
-				self.redisClient.getHashSetField(userSocketMappingKeyName, content.targetIdentifier, async (err, reply) => {
-					var targetSocket = reply.toString();					
+			let handleMessage = async (content) => {		
+				this.redisClient.getHashSetField(userSocketMappingKeyName, content.targetIdentifier, async (err, reply) => {
+					let targetSocket = reply.toString();	
 					await io.to(targetSocket).emit('msg', content.payload);
 				});
 				
-				var messagingQueuePayload = factories.constructMessagingPayLoad(
+				let messagingQueuePayload = factories.constructMessagingPayLoad(
 				{
 					content: content.payload, 
 					senderIdentifier: userIdentifier, 
@@ -28,13 +29,11 @@ var SocketServer = function(redisClient) {
 				}, global.messagingPayloadType.addMessage);
 				
 				await messagingBrokerClient.publishMessage(JSON.stringify(messagingQueuePayload));
-			});
-			
-			socket.on('disconnect', () => {
-				//self.redisClient.deleteHashField(userSocketMappingKeyName, userIdentifier);
-			});
+			}
+
+			socket.on('msg', handleMessage);			
 		});
-	}
+	}	
 }
 
 module.exports = SocketServer;

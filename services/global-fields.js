@@ -1,8 +1,8 @@
-var messagingPayloadType = {
+const messagingPayloadType = {
 	addMessage : 1
 }
 
-var accountsPayloadType = {
+const accountsPayloadType = {
 	addUser : 1
 }
 
