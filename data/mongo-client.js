@@ -1,5 +1,5 @@
 const MongoClient = require('mongodb').MongoClient;
-const collectionSet = require('./mongo-set.js');
+const MongoSet = require('./mongo-set.js');
 
 class Client {
 	
@@ -21,7 +21,7 @@ class Client {
 	async populateContext() {
 		(await this.database.listCollections().toArray()).map(col => {
 			if(col.name != 'system.indexes') 
-				this.context[col.name] = new collectionSet(col.name, this.database);
+				this.context[col.name] = new MongoSet(col.name, this.database);
 		});
 	}
 
@@ -29,7 +29,7 @@ class Client {
 		let copy = Object.assign({}, this.context); //Cloning mongoContext to a new object
 		for (let key in copy) {
 			if (copy.hasOwnProperty(key)) {
-				copy[key] = new collectionSet(key, this.db);
+				copy[key] = new MongoSet(key, this.database);
 			}
 		}
 		return copy;

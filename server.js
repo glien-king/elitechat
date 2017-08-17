@@ -20,15 +20,6 @@ const setupServer = async () => {
 	await mongoClient.initializeDatabaseConnection(config);
 	await http.listen(config.port, () => console.log('elite-chat: listening to connections on port: ' + config.port));
 	
-
-	var k1 = mongoClient.getContext();
-	k1.users.filter({Name: "Ahmed"});
-	var k2 = mongoClient.getContext();
-	k2.users.project({ID: 0});
-	console.log(k1.users);
-	console.log('----------------------------------------------------------------------');
-	console.log(k2.users);
-
 	const messagingBrokerClient = await brokerClientFactory.getMessagingBrokerClient(config);
 	const accountsBrokerClient = await brokerClientFactory.getAccountsBrokerClient(config);
 
