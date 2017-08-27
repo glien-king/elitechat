@@ -1,17 +1,14 @@
-const factories = require('./services/factories.js');
-const global = require('./services/global-fields');
+const UserService = require('./services/user-service');
 
-const handleRoutes = function(app, accountsBrokerClient){
+const handleRoutes = function(app, accountsBrokerClient, mongoClient) {
 	
 	app.get('/', (request, response) => {
 		response.sendFile(__dirname + '/views/index.html');
 	});
 				
 	app.post('/user/subscribe', async (request, response) => {
-		let body = request.body;
-		let payload = factories.constructAccountPayLoad(body, global.accountsPayloadType.addUser);
-		await accountsBrokerClient.publishMessage(JSON.stringify(payload));
-		response.send("OK");
+		let result = await (new UserService(mongoClient.getContext(), accountsBrokerClient)).subscribe(request.body);
+		response.send(result);
 	});
 }
 

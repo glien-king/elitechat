@@ -29,8 +29,7 @@ consumeMessage = (message) => {
 }
 
 addUser = (payload, context) => {
-	let userIdentifier = helpers.generateGuid();
-	let userDocument = factories.constructUserDocument(payload.name, userIdentifier, payload.email, payload.password, payload.birthdate, payload.gender);
+	let userDocument = factories.constructUserDocument(payload.name, payload.userIdentifier, payload.email, payload.password, payload.birthdate, payload.gender);
 	context.users.insert(userDocument);
 	fs.readFile('../views/mail/welcome_email.html', 'utf8', (oErr, sText) => {
 		mailer.sendMail(payload.email, 'Welcome to Elite Chat', sText);

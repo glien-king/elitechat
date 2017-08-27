@@ -14,6 +14,7 @@ const factories = {
 	},
 	constructAccountPayLoad(userDetails, type) {
 		let hashedPassword = helpers.hashData(userDetails.password);
+		let userIdentifier = helpers.generateGuid();
 		return {
 			payloadType: type,
 			version: "1.0.0",
@@ -22,6 +23,7 @@ const factories = {
 			gender: userDetails.gender,
 			birthdate: userDetails.birthdate,
 			password: hashedPassword,
+			userIdentifier: userIdentifier,
 			queuedOn: new Date()
 		}
 	},

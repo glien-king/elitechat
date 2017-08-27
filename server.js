@@ -23,7 +23,7 @@ const setupServer = async () => {
 	const messagingBrokerClient = await brokerClientFactory.getMessagingBrokerClient(config);
 	const accountsBrokerClient = await brokerClientFactory.getAccountsBrokerClient(config);
 
-	handleRoutes(app, accountsBrokerClient);
+	handleRoutes(app, accountsBrokerClient, mongoClient);
 	socketServer.initializeSocketServer(io, messagingBrokerClient);
 }
 
