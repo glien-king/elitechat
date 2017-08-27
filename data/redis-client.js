@@ -1,46 +1,43 @@
-var redis = require('redis');
+const redis = require('redis');
 
-var RedisClient = function(config){
+class RedisClient {
 	
-	this.client = redis.createClient(config.redisPort, config.redisEndpoint, {no_ready_check: true});
-	
-	this.client.auth(config.redisPassword);
-		
-	this.storeString = (key, value) => {
+	constructor(config) {
+		this.client = redis.createClient(config.redisPort, config.redisEndpoint, {no_ready_check: true});
+		this.client.auth(config.redisPassword);
+	}
+
+	storeString(key, value) {
 		this.client.set(key, value);
 	}
 	
-	this.getString = (key, callback) => {
-		return this.client.get(key, callback);
+	getString(key) {
+		return new Promise((resolve, reject) => {this.client.get(key, () => {resolve()})})
 	}
 	
-	this.storeHashSet = (key, hashTable) => {
+	storeHashSet(key, hashTable) {
 		this.client.hmset(key, hashTable);
 	}
 	
-	this.storeHashSetField = (key, field, value) => {
+	storeHashSetField(key, field, value) {
 		this.client.hmset(key, field, value);
 	}
 	
-	this.getHashSet = (key, callback) => {
-		return this.client.hgetall(key, callback);
+	getHashSet(key) {
+		return new Promise((resolve, reject) => {this.client.hgetall(key, () => {resolve()})})
 	}
 	
-	this.getHashSetField = (key, field, callback) => {
-		return this.client.hget(key, field, callback);
+	getHashSetField(key, field) {
+		return new Promise((resolve, reject) => {this.client.hget(key,() => {resolve()})})
 	}
-	
-	this.keyExists = async (key, callback) => {
-		return (await this.client.exists(key, callback));
-	}
-	
-	this.deleteKey = (key) => {
+		
+	deleteKey(key) {
 		this.client.del(key);
 	}
 	
-	this.deleteHashField = (key, field) => {
+	deleteHashField(key, field) {
 		this.client.hdel(key, field);
 	}
-};
+}
 
 module.exports = RedisClient;

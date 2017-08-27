@@ -16,11 +16,10 @@ class SocketServer {
 			this.redisClient.storeHashSetField(userSocketMappingKeyName, userIdentifier, socketId);
 			
 			let handleMessage = async (content) => {		
-				this.redisClient.getHashSetField(userSocketMappingKeyName, content.targetIdentifier, async (err, reply) => {
-					let targetSocket = reply.toString();	
-					await io.to(targetSocket).emit('msg', content.payload);
-				});
-				
+				let targetSocket = await this.redisClient.getHashSetField(userSocketMappingKeyName, content.targetIdentifier); 
+
+				await io.to(targetSocket.toString()).emit('msg', content.payload);
+
 				let messagingQueuePayload = factories.constructMessagingPayLoad(
 				{
 					content: content.payload, 

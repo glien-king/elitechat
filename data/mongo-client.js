@@ -9,7 +9,7 @@ class Client {
 		this.context = {};
 	}
 
-	async initializeDatabaseConnection() {
+	initializeDatabaseConnection() {
 		if(this.database != null) return;
 		return new Promise((resolve, reject) => MongoClient.connect(this.config.mongoConnectionString, async (err, database) => {
 			this.database = database;
