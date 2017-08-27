@@ -1,32 +1,16 @@
 {
   "name": "elite-chat",
-  "version": "1.0.0",
-  "description": "A demo application for a chatting client built over nodejs",
-  "main": "server.js",
-  "scripts": {
-    "test": "mocha -R list --timeout 5000"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/asarnaout/elitechat.git"
-  },
-  "author": "Ahmed Shirin Arnaout",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/asarnaout/elitechat/issues"
-  },
-  "homepage": "https://github.com/asarnaout/elitechat#readme",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "amqplib": "^0.5.1",
-    "body-parser": "^1.17.2",
-    "crypto-js": "^3.1.9-1",
-    "express": "^4.15.3",
-    "mocha": "^3.4.2",
-    "mongodb": "^2.2.30",
-    "nodemailer": "^4.0.1",
-    "path": "^0.12.7",
-    "redis": "^2.8.0",
-    "serve-favicon": "^2.4.3",
-    "socket.io": "^2.0.3"
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-scripts": "1.0.11"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   }
 }
